@@ -45,6 +45,7 @@ public class RequestAspect {
                     .getRequestAttributes()).getRequest();
             Enumeration<String> enumeration = request.getHeaderNames();
             String userToken = null;
+            // TODO 此处必须根据实际情况对续签Token的客户标识进行修改
             Long userId = null;
             Boolean renewalToken = false;
             while (enumeration.hasMoreElements()) {

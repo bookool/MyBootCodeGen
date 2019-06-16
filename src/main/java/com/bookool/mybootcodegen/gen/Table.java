@@ -61,7 +61,7 @@ public class Table {
                     }
                     String dbType = resultSet.getString("DATA_TYPE");
                     String javaType = CodeFactory.javaSqlTypeTransferMap.get(dbType);
-                    Column column = new Column(columnName, nameUtils.camelCaseName(columnName),
+                    Column column = new Column(columnName, NameUtils.camelCaseName(columnName),
                             javaType, dbType,
                             resultSet.getString("COLUMN_COMMENT"),
                             resultSet.getString("IS_NULLABLE"),

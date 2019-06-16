@@ -26,7 +26,7 @@ spring:
       url: ${tempMap.dbUrl}
       username: ${tempMap.dbUserName}
       password: ${tempMap.dbPassword}
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
       #初始化连接大小
       initial-size: 5
       #最小空闲连接数

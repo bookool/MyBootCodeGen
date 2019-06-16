@@ -1,6 +1,6 @@
 package com.bookool.mybootcodegen.gen;
 
-public class nameUtils {
+public class NameUtils {
     /**
      * 转换为下划线
      *

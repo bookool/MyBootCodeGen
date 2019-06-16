@@ -3,6 +3,9 @@
 
 <!-- 用户基础信息表 -->
 <mapper namespace="${packageName}.mapper.${table.javaName}Mapper">
+
+    <!-- #####################以下为自动生成的代码############################################################ -->
+
     <resultMap id="BaseResultMap" type="${packageName}.domain.dto.result.${table.javaName}Result">
         <!-- id -->
         <id column="id" property="id"/>

@@ -2,7 +2,7 @@
 
 ## 项目介绍
 Spring Boot 2 项目框架生成器，可以根据mysql数据库结构生成完整的可运行的项目。  
-生成的项目见：https://github.com/bookool/MySpringBoot  
+生成的项目见：https://gitee.com/tommygun/MySpringBoot  
 * 可生成完整项目，也可根据需要单为某一张表生成相关代码；
 * 使用freemaker模板，可根据需要修改。
 ## 数据库准备
@@ -46,3 +46,7 @@ java -jar mybootcodegen.jar [配置文件路径]
 ```
 java -jar mybootcodegen.jar [配置文件路径] [表名]
 ```
+
+## 更新
+### 190530
+可以自动生成枚举：字段必须以_state或_status结尾；字段注释举例：用户状态枚举：0-无效，1-有效

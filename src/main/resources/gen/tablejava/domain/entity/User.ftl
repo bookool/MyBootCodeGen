@@ -41,6 +41,8 @@ import java.util.Date;
 @Table(name = "${table.tableName}")
 public class ${table.javaName} extends BaseEntity {
 
+// #####################以下为自动生成的代码############################################################
+
 <#list table.columns as column>
     /**
      * ${column.colComment}
@@ -49,5 +51,7 @@ public class ${table.javaName} extends BaseEntity {
     private ${column.colJavaType} ${column.javaName};
 
 </#list>
+
+// ^^^^^^^^^^^^^^^^^^^^^以上为自动生成的代码^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 }

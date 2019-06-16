@@ -25,6 +25,8 @@ public class Gener {
 
     private Table table;
 
+    private EnumGener enumGener;
+
     Gener(@NotNull Properties prop, String fileName, Table table) {
         this.packageName = prop.getProperty(CodeFactory.PACKAGE_NAME);
         this.author = prop.getProperty(CodeFactory.AUTHOR);

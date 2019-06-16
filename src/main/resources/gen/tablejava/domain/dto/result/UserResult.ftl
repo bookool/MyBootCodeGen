@@ -16,6 +16,8 @@ import java.util.Date;
 @Data
 public class ${table.javaName}Result extends BaseResult {
 
+// #####################以下为自动生成的代码############################################################
+
 <#list table.columns as column>
     /**
     * ${column.colComment}
@@ -23,5 +25,7 @@ public class ${table.javaName}Result extends BaseResult {
     private ${column.colJavaType} ${column.javaName};
 
 </#list>
+
+// ^^^^^^^^^^^^^^^^^^^^^以上为自动生成的代码^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 }

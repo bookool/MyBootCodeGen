@@ -4,11 +4,15 @@ import freemarker.template.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 
 import static freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS;
 
@@ -126,18 +130,37 @@ public class CodeFactory {
                     } else {
                         javaName = tableName;
                     }
-                    javaName = nameUtils.camelCaseNameUp(javaName);
+                    javaName = NameUtils.camelCaseNameUp(javaName);
                     String javaNameLow = javaName.substring(0, 1).toLowerCase() + javaName.substring(1);
                     Table table = new Table(connection, dbName, tableName, javaName, javaNameLow);
 
+                    String pathHead;
+                    Gener gener;
+
+                    // *** enum ***
+                    for (Column column : table.getColumns()) {
+                        if (Pattern.matches(".*_(state|status)$", column.getColName())) {
+                            EnumGener enumGener = new EnumGener(column);
+                            pathHead = "common"
+                                    + File.separatorChar
+                                    + "enums"
+                                    + File.separatorChar;
+                            gener = new Gener(prop,
+                                    pathHead + enumGener.getEnumName() + "Enum.java", table);
+                            gener.setEnumGener(enumGener);
+                            pathHead = "tablejava/" + pathHead.replace(File.separatorChar, '/');
+                            genOne(gener, pathHead + "UserStateEnum.ftl");
+                        }
+                    }
+
                     // *** entity ***
-                    String pathHead = "domain"
+                    pathHead = "domain"
                             + File.separatorChar
                             + "entity"
                             + File.separatorChar;
-                    Gener gener = new Gener(prop,
+                    gener = new Gener(prop,
                             pathHead + table.getJavaName() + ".java", table);
-                    pathHead = "tablejava" + File.separatorChar + pathHead;
+                    pathHead = "tablejava/" + pathHead.replace(File.separatorChar, '/');
                     genOne(gener, pathHead + "User.ftl");
 
                     // *** param ***
@@ -149,7 +172,7 @@ public class CodeFactory {
                             + File.separatorChar;
                     gener = new Gener(prop,
                             pathHead + table.getJavaName() + "Param.java", table);
-                    pathHead = "tablejava" + File.separatorChar + pathHead;
+                    pathHead = "tablejava/" + pathHead.replace(File.separatorChar, '/');
                     genOne(gener, pathHead + "UserParam.ftl");
 
                     // *** result ***
@@ -161,7 +184,7 @@ public class CodeFactory {
                             + File.separatorChar;
                     gener = new Gener(prop,
                             pathHead + table.getJavaName() + "Result.java", table);
-                    pathHead = "tablejava" + File.separatorChar + pathHead;
+                    pathHead = "tablejava/" + pathHead.replace(File.separatorChar, '/');
                     genOne(gener, pathHead + "UserResult.ftl");
 
                     // *** mapper ***
@@ -169,7 +192,7 @@ public class CodeFactory {
                             + File.separatorChar;
                     gener = new Gener(prop,
                             pathHead + table.getJavaName() + "Mapper.java", table);
-                    pathHead = "tablejava" + File.separatorChar + pathHead;
+                    pathHead = "tablejava/" + pathHead.replace(File.separatorChar, '/');
                     genOne(gener, pathHead + "UserMapper.ftl");
 
                     // *** service ***
@@ -177,7 +200,7 @@ public class CodeFactory {
                             + File.separatorChar;
                     gener = new Gener(prop,
                             pathHead + table.getJavaName() + "Service.java", table);
-                    pathHead = "tablejava" + File.separatorChar + pathHead;
+                    pathHead = "tablejava/" + pathHead.replace(File.separatorChar, '/');
                     genOne(gener, pathHead + "UserService.ftl");
 
                     // *** service impl***
@@ -187,7 +210,7 @@ public class CodeFactory {
                             + File.separatorChar;
                     gener = new Gener(prop,
                             pathHead + table.getJavaName() + "ServiceImpl.java", table);
-                    pathHead = "tablejava" + File.separatorChar + pathHead;
+                    pathHead = "tablejava/" + pathHead.replace(File.separatorChar, '/');
                     genOne(gener, pathHead + "UserServiceImpl.ftl");
 
                     // *** mapper xml***
@@ -203,7 +226,7 @@ public class CodeFactory {
                             .append(table.getJavaName())
                             .append("Mapper.xml");
                     gener = new Gener(prop, zb.toString(), table);
-                    pathHead = "resources" + File.separatorChar + "UserMapper.ftl";
+                    pathHead = "resources/UserMapper.ftl";
                     genOne(gener, pathHead);
 
                 }
@@ -226,42 +249,66 @@ public class CodeFactory {
 
     // 生成通用的项目文件
     private void genCommonJava() {
-        File f = new File(this.getClass().getName());
-        String pathRoot = f.getAbsolutePath();
-        pathRoot = pathRoot.substring(0, pathRoot.lastIndexOf(File.separatorChar))
-                + File.separatorChar + "src"
-                + File.separatorChar + "main"
-                + File.separatorChar + "resources"
-                + File.separatorChar + "gen";
-        String commonJavaPath = pathRoot + File.separatorChar + "commonjava";
-        List<File> filesList = new ArrayList<>();
-        initSetFile(filesList, new File(commonJavaPath));
-        for (File file : filesList) {
+        // 调试时使用
+//        File f = new File(this.getClass().getName());
+//        String pathRoot = f.getAbsolutePath();
+//        pathRoot = pathRoot.substring(0, pathRoot.lastIndexOf(File.separatorChar))
+//                + File.separatorChar + "src"
+//                + File.separatorChar + "main"
+//                + File.separatorChar + "resources"
+//                + File.separatorChar + "gen";
+//        String commonJavaPath = pathRoot + File.separatorChar + "commonjava";
+//        List<File> filesList = new ArrayList<>();
+//        initSetFile(filesList, new File(commonJavaPath));
+//        for (File file : filesList) {
+//            try {
+//                int rootNum = commonJavaPath.length() + 1;
+//                String pathHead;
+//                if (rootNum < file.getParent().length()) {
+//                    pathHead = file.getParent().substring(rootNum) + File.separatorChar;
+//                } else {
+//                    pathHead = "";
+//                }
+//                String fileName = file.getName();
+//                rootNum = fileName.indexOf('.');
+//                if (rootNum > -1) {
+//                    fileName = fileName.substring(0, rootNum);
+//                }
+//                Gener gener = new Gener(prop, pathHead + fileName + ".java", null);
+//                genOne(gener, File.separatorChar + "commonjava" + File.separatorChar + pathHead + fileName + ".ftl");
+//            } catch (Exception e) {
+//                //
+//            }
+//        }
+
+        List<String> filesList = new ArrayList<>();
+        try {
+            String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            System.out.println("jar:" + path);
+            JarFile jarFile = new JarFile(URLDecoder.decode(path, "UTF-8"));
+            Enumeration jarEntries = jarFile.entries();
+            while (jarEntries.hasMoreElements()) {
+                JarEntry jarEntry = (JarEntry) jarEntries.nextElement();
+                String resourceName = jarEntry.getName();
+                if (Pattern.matches("^gen/commonjava/.*\\.ftl$", resourceName)) {
+                    filesList.add(resourceName);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (String fileName : filesList) {
             try {
-//                System.out.println("getAbsolutePath:" + file.getAbsolutePath());
-//                System.out.println("getCanonicalPath:" + file.getCanonicalPath());
-//                System.out.println("getName:" + file.getName());
-//                System.out.println("getParent:" + file.getParent());
-//                System.out.println("getPath:" + file.getPath());
-//                System.out.println("-----");
-                int rootNum = commonJavaPath.length() + 1;
-                String pathHead;
-                if (rootNum < file.getParent().length()) {
-                    pathHead = file.getParent().substring(rootNum) + File.separatorChar;
-                } else {
-                    pathHead = "";
-                }
-                String fileName = file.getName();
-                rootNum = fileName.indexOf('.');
-                if (rootNum > -1) {
-                    fileName = fileName.substring(0, rootNum);
-                }
-                Gener gener = new Gener(prop, pathHead + fileName + ".java", null);
-                genOne(gener, File.separatorChar + "commonjava" + File.separatorChar + pathHead + fileName + ".ftl");
+                String javaPath = fileName.replaceFirst("^gen/commonjava/(.*\\.)ftl$", "$1java").replace('/', File.separatorChar);
+                String ftlPath = fileName.replaceFirst("^gen/", "");
+                Gener gener = new Gener(prop, javaPath, null);
+                genOne(gener, ftlPath);
             } catch (Exception e) {
                 //
             }
         }
+
+
 
         Map<String, String> map = new HashMap<>();
         String packageName = prop.getProperty(PACKAGE_NAME);
@@ -274,14 +321,13 @@ public class CodeFactory {
         map.put("dbUserName", prop.getProperty(DB_USERNAME));
         map.put("dbPassword", prop.getProperty(DB_PASSWORD));
 
-        String otherPath = File.separatorChar + "pomxml" + File.separatorChar + "pom.ftl";
+        String otherPath = "pomxml/pom.ftl";
         String pathHead = File.separatorChar + "pom.xml";
         Gener gener = new Gener(prop, pathHead, null);
         gener.setTempMap(map);
         genOne(gener, otherPath);
 
-        otherPath = File.separatorChar + "resources"
-                + File.separatorChar + "application.ftl";
+        otherPath = "resources/application.ftl";
         pathHead = File.separatorChar + "src"
                 + File.separatorChar + "main"
                 + File.separatorChar + "resources"
@@ -290,8 +336,7 @@ public class CodeFactory {
         gener.setTempMap(map);
         genOne(gener, otherPath);
 
-        otherPath = File.separatorChar + "resources"
-                + File.separatorChar + "application-develop.ftl";
+        otherPath = "resources/application-develop.ftl";
         pathHead = File.separatorChar + "src"
                 + File.separatorChar + "main"
                 + File.separatorChar + "resources"
@@ -300,8 +345,7 @@ public class CodeFactory {
         gener.setTempMap(map);
         genOne(gener, otherPath);
 
-        otherPath = File.separatorChar + "resources"
-                + File.separatorChar + "application-production.ftl";
+        otherPath = "resources/application-production.ftl";
         pathHead = File.separatorChar + "src"
                 + File.separatorChar + "main"
                 + File.separatorChar + "resources"
@@ -310,8 +354,7 @@ public class CodeFactory {
         gener.setTempMap(map);
         genOne(gener, otherPath);
 
-        otherPath = File.separatorChar + "resources"
-                + File.separatorChar + "logback-boot-develop.ftl";
+        otherPath = "resources/logback-boot-develop.ftl";
         pathHead = File.separatorChar + "src"
                 + File.separatorChar + "main"
                 + File.separatorChar + "resources"
@@ -320,8 +363,7 @@ public class CodeFactory {
         gener.setTempMap(map);
         genOne(gener, otherPath);
 
-        otherPath = File.separatorChar + "resources"
-                + File.separatorChar + "logback-boot-production.ftl";
+        otherPath = "resources/logback-boot-production.ftl";
         pathHead = File.separatorChar + "src"
                 + File.separatorChar + "main"
                 + File.separatorChar + "resources"
@@ -330,21 +372,6 @@ public class CodeFactory {
         gener.setTempMap(map);
         genOne(gener, otherPath);
 
-    }
-
-    // 遍历目录
-    private void initSetFile(List<File> listFile, File file) {
-        File[] files = file.listFiles();
-        if (files == null) {
-            return;
-        }
-        for (File liFile : files) {
-            if (liFile.isDirectory()) {
-                initSetFile(listFile, liFile);
-            } else if (liFile.isFile()) {
-                listFile.add(liFile);
-            }
-        }
     }
 
     //根据一个模板生成一个目标文件
@@ -385,19 +412,19 @@ public class CodeFactory {
     private Configuration getTemplateCfg() {
         // Initialize configuration;
         Configuration cfg = new Configuration(DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-
-        try {
-            File f = new File(this.getClass().getName());
-            String path = f.getAbsolutePath();
-            path = path.substring(0, path.lastIndexOf(File.separatorChar))
-                    + File.separatorChar + "src"
-                    + File.separatorChar + "main"
-                    + File.separatorChar + "resources"
-                    + File.separatorChar + "gen";
-            cfg.setDirectoryForTemplateLoading(new File(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            File f = new File(this.getClass().getName());
+//            String path = f.getAbsolutePath();
+//            path = path.substring(0, path.lastIndexOf(File.separatorChar))
+//                    + File.separatorChar + "src"
+//                    + File.separatorChar + "main"
+//                    + File.separatorChar + "resources"
+//                    + File.separatorChar + "gen";
+//            cfg.setDirectoryForTemplateLoading(new File(path));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        cfg.setClassForTemplateLoading(this.getClass(), "/gen/");
         cfg.setTemplateUpdateDelayMilliseconds(0);
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
         //Use beans wrapper (recommmended for most applications)
@@ -410,6 +437,21 @@ public class CodeFactory {
         //default locale
         cfg.setLocale(Locale.CHINESE);
         return cfg;
+    }
+
+    // 遍历目录
+    private void initSetFile(List<File> listFile, File file) {
+        File[] files = file.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File liFile : files) {
+            if (liFile.isDirectory()) {
+                initSetFile(listFile, liFile);
+            } else if (liFile.isFile()) {
+                listFile.add(liFile);
+            }
+        }
     }
 
 }
