@@ -372,6 +372,26 @@ public class CodeFactory {
         gener.setTempMap(map);
         genOne(gener, otherPath);
 
+        otherPath = "resources/note/package_readme.ftl";
+        pathHead = File.separatorChar + "src"
+                + File.separatorChar + "main"
+                + File.separatorChar + "resources"
+                + File.separatorChar + "note"
+                + File.separatorChar + "package_readme";
+        gener = new Gener(prop, pathHead, null);
+        gener.setTempMap(map);
+        genOne(gener, otherPath);
+
+        otherPath = "resources/note/page_readme.ftl";
+        pathHead = File.separatorChar + "src"
+                + File.separatorChar + "main"
+                + File.separatorChar + "resources"
+                + File.separatorChar + "note"
+                + File.separatorChar + "page_readme";
+        gener = new Gener(prop, pathHead, null);
+        gener.setTempMap(map);
+        genOne(gener, otherPath);
+
     }
 
     //根据一个模板生成一个目标文件

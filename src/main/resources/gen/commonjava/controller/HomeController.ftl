@@ -23,24 +23,65 @@ import java.util.Set;
  */
 @RestController
 public class HomeController extends BaseController {
+
+    private static String packageString = null;
+
+    private static String pageString = null;
+
+    private static String codeReadme = null;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home() {
         return "Hello World!";
     }
 
     @Profile({"develop"})
+    @RequestMapping(value = "/package_readme", method = RequestMethod.GET)
+    public String packageReadme() {
+        if (packageString != null) {
+            return packageString;
+        }
+        packageString = ResourceUtil.readResource("/note/package_readme", "<br />");
+        if (packageString != null) {
+            packageString = packageString.replaceAll("\\s", " &nbsp;");
+            packageString = "<html><head><title>响应数据包说明</title></head><body style='line-height:1.8em;'>"
+                    + packageString + "</body></html>";
+        }
+        return packageString;
+    }
+
+    @Profile({"develop"})
+    @RequestMapping(value = "/page_readme", method = RequestMethod.GET)
+    public String pageReadme() {
+        if (pageString != null) {
+            return pageString;
+        }
+        pageString = ResourceUtil.readResource("/note/page_readme", "<br />");
+        if (pageString != null) {
+            pageString = pageString.replaceAll("\\s", " &nbsp;");
+            pageString = "<html><head><title>分页数据包说明</title></head><body style='line-height:1.8em;'>"
+                    + pageString + "</body></html>";
+        }
+        return pageString;
+    }
+
+    @Profile({"develop"})
     @RequestMapping(value = "/code_readme", method = RequestMethod.GET)
     public String codeReadme() {
+        if (codeReadme != null) {
+            return codeReadme;
+        }
         Map<String, Class<?>> linkedHashMap = new LinkedHashMap<>();
         linkedHashMap.put("通用", CommonResponseEnum.class);
+        linkedHashMap.put("用户", UserResponseEnum.class);
         // TODO 此处继续增加响应枚举类
         StringBuilder headString = new StringBuilder();
         StringBuilder bodyString = new StringBuilder();
         try {
-            Set<Entry<String, Class<?>>> set = linkedHashMap.entrySet();
-            Iterator<Entry<String, Class<?>>> iterator = set.iterator();
+            Set<Map.Entry<String, Class<?>>> set = linkedHashMap.entrySet();
+            Iterator<Map.Entry<String, Class<?>>> iterator = set.iterator();
             while (iterator.hasNext()) {
-                Entry entry = iterator.next();
+                Map.Entry entry = iterator.next();
                 String key = (String) entry.getKey();
                 Class<?> value = (Class<?>) entry.getValue();
                 headString.append("<a href='#").append(key).append("'>").append(key).append("</a> &nbsp; ");
@@ -49,11 +90,12 @@ public class HomeController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "<html><head><title>响应code说明</title></head><body>" +
+        codeReadme = "<html><head><title>响应code说明</title></head><body>" +
                 headString.toString() +
                 "<br />" +
                 bodyString.toString() +
                 "</body></html>";
+        return codeReadme;
     }
 
     private String enumToString(Class<?> clazz, String name) throws Exception {
