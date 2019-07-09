@@ -36,7 +36,7 @@ ${enum}
      */
     @Contract(pure = true)
     @Override
-    public Integer code() {
+    public Integer getCode() {
         return code;
     }
 
@@ -47,7 +47,7 @@ ${enum}
      */
     @Contract(pure = true)
     @Override
-    public String message() {
+    public String getMessage() {
         return message;
     }
 
@@ -55,7 +55,7 @@ ${enum}
 
     static {
         for (${enumGener.enumName}Enum e : ${enumGener.enumName}Enum.values()) {
-            LOOKUP_MAP.put(e.code, e);
+            LOOKUP_MAP.put(e.getCode(), e);
         }
     }
 
@@ -76,7 +76,7 @@ ${enum}
      * @return 枚举信息
      */
     public static String getMessateByCode(Integer code) {
-        return LOOKUP_MAP.get(code).message;
+        return LOOKUP_MAP.get(code).getMessage();
     }
 
 }

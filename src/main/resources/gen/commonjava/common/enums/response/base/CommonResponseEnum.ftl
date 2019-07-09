@@ -54,7 +54,7 @@ public enum CommonResponseEnum implements ResponseEnum {
      */
     @Contract(pure = true)
     @Override
-    public Integer code() {
+    public Integer getCode() {
         return code;
     }
 
@@ -65,7 +65,7 @@ public enum CommonResponseEnum implements ResponseEnum {
      */
     @Contract(pure = true)
     @Override
-    public String message() {
+    public String getMessage() {
         return message;
     }
 
@@ -73,7 +73,7 @@ public enum CommonResponseEnum implements ResponseEnum {
 
     static {
         for (CommonResponseEnum e : CommonResponseEnum.values()) {
-            LOOKUP_MAP.put(e.code, e);
+            LOOKUP_MAP.put(e.getCode(), e);
         }
     }
 
@@ -94,7 +94,7 @@ public enum CommonResponseEnum implements ResponseEnum {
      * @return 枚举信息
      */
     public static String getMessateByCode(Integer code) {
-        return LOOKUP_MAP.get(code).message;
+        return LOOKUP_MAP.get(code).getMessage();
     }
 
 }

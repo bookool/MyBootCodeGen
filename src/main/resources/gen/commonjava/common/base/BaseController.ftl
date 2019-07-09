@@ -232,8 +232,8 @@ public abstract class BaseController {
      * @date ${.now?string("yyyy-MM-dd HH:mm:ss")}
      */
     private static Map getJsonMsg(@NotNull BussinessEnum successEnum, String msg, Map data) {
-        return ImmutableMap.of(RESULT_KEY_SUCCESS, successEnum.code(),
-                RESULT_KEY_CODE, CommonResponseEnum.CUSTOM.code(),
+        return ImmutableMap.of(RESULT_KEY_SUCCESS, successEnum.getCode(),
+                RESULT_KEY_CODE, CommonResponseEnum.CUSTOM.getCode(),
                 RESULT_KEY_MESSAGE, msg,
                 RESULT_KEY_DATA, data == null ? Collections.emptyMap() : data
         );
@@ -251,9 +251,9 @@ public abstract class BaseController {
      * @date ${.now?string("yyyy-MM-dd HH:mm:ss")}
      */
     private static Map getJsonMsg(@NotNull BussinessEnum successEnum, @NotNull ResponseEnum codeEnum, Map data) {
-        return ImmutableMap.of(RESULT_KEY_SUCCESS, successEnum.code(),
-                RESULT_KEY_CODE, codeEnum.code(),
-                RESULT_KEY_MESSAGE, codeEnum.message(),
+        return ImmutableMap.of(RESULT_KEY_SUCCESS, successEnum.getCode(),
+                RESULT_KEY_CODE, codeEnum.getCode(),
+                RESULT_KEY_MESSAGE, codeEnum.getMessage(),
                 RESULT_KEY_DATA, data == null ? Collections.emptyMap() : data
         );
     }

@@ -19,7 +19,7 @@ public class ResponseException extends Exception {
     }
 
     public ResponseException(ResponseEnum responseEnum) {
-        super(responseEnum.message());
+        super(responseEnum.getMessage());
         this.responseEnum = responseEnum;
     }
 
