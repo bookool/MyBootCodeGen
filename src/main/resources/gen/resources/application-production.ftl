@@ -1,4 +1,4 @@
-myboot:
+${tempMap.artifactId}:
   #UserToken
   user-token:
     # UserToken密钥
@@ -18,7 +18,7 @@ myboot:
 logging:
   config: classpath:logback-boot-production.xml
   level:
-    com.bookool.myboot.mapper: debug
+    ${packageName}.mapper: debug
 
 spring:
   datasource:

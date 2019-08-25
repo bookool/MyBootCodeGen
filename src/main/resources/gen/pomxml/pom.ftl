@@ -14,39 +14,39 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <junit-jupiter-api.version>5.5.0-M1</junit-jupiter-api.version>
-        <spring-security-web.version>5.1.5.RELEASE</spring-security-web.version>
-        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <junit-jupiter-api.version>5.5.1</junit-jupiter-api.version>
+        <spring-security-web.version>5.1.6.RELEASE</spring-security-web.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <commons-io.version>2.6</commons-io.version>
-        <commons-codec.version>1.12</commons-codec.version>
+        <commons-codec.version>1.13</commons-codec.version>
         <commons-lang3.version>3.9</commons-lang3.version>
-        <okhttp.version>3.14.2</okhttp.version>
-        <okio.version>2.2.2</okio.version>
-        <druid-spring-boot-starter.version>1.1.17</druid-spring-boot-starter.version>
-        <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
-        <mariadb-java-client.version>2.4.1</mariadb-java-client.version>
-        <postgresql.version>42.2.5</postgresql.version>
-        <mybatis-spring-boot-starter.version>2.0.1</mybatis-spring-boot-starter.version>
-        <pagehelper-spring-boot-starter.version>1.2.10</pagehelper-spring-boot-starter.version>
+        <okhttp.version>4.1.0</okhttp.version>
+        <okio.version>2.3.0</okio.version>
+        <druid-spring-boot-starter.version>1.1.18</druid-spring-boot-starter.version>
+        <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
+        <mariadb-java-client.version>2.4.3</mariadb-java-client.version>
+        <postgresql.version>42.2.6</postgresql.version>
+        <mybatis-spring-boot-starter.version>2.1.0</mybatis-spring-boot-starter.version>
+        <pagehelper-spring-boot-starter.version>1.2.12</pagehelper-spring-boot-starter.version>
         <mapper-spring-boot-starter.version>2.1.5</mapper-spring-boot-starter.version>
         <quartz.version>2.3.1</quartz.version>
-        <nimbus-jose-jwt.version>7.2.1</nimbus-jose-jwt.version>
-        <freemarker.version>2.3.28</freemarker.version>
+        <nimbus-jose-jwt.version>7.8</nimbus-jose-jwt.version>
+        <freemarker.version>2.3.29</freemarker.version>
         <json-path.version>2.4.0</json-path.version>
         <springfox-swagger2.version>2.9.2</springfox-swagger2.version>
         <springfox-swagger-ui.version>2.9.2</springfox-swagger-ui.version>
-        <fastjson.version>1.2.58</fastjson.version>
+        <fastjson.version>1.2.59</fastjson.version>
         <aspectjweaver.version>1.9.4</aspectjweaver.version>
-        <spring-kafka.version>2.2.6.RELEASE</spring-kafka.version>
-        <rocketmq-client.version>4.5.1</rocketmq-client.version>
-        <guava.version>27.1-jre</guava.version>
+        <spring-kafka.version>2.2.8.RELEASE</spring-kafka.version>
+        <rocketmq-client.version>4.5.2</rocketmq-client.version>
+        <guava.version>28.0-jre</guava.version>
         <jest.version>6.3.1</jest.version>
-        <jna.version>5.3.1</jna.version>
+        <jna.version>5.4.0</jna.version>
         <lombok.version>1.18.8</lombok.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
         <mapstruct-processor.version>1.3.0.Final</mapstruct-processor.version>
         <jdom.version>2.0.2</jdom.version>
-        <cglib.version>3.2.12</cglib.version>
+        <cglib.version>3.3.0</cglib.version>
         <maven-model.version>3.6.1</maven-model.version>
         <annotations.version>RELEASE</annotations.version>
     </properties>
@@ -59,7 +59,7 @@
         <!--被继承的父项目的构件标识符-->
         <artifactId>spring-boot-starter-parent</artifactId>
         <!--被继承的父项目的版本-->
-        <version>2.1.6.RELEASE</version>
+        <version>2.1.7.RELEASE</version>
         <!--父项目的pom.xml文件的相对路径。相对路径允许你选择一个不同的路径。默认值是../pom.xml。
             Maven首先在构建当前项目的地方寻找父项目的pom，其次在文件系统的这个位置（relativePath位置），
             然后在本地仓库，最后在远程仓库寻找父项目的pom。-->

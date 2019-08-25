@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @date ${.now?string("yyyy-MM-dd HH:mm:ss")}
  */
 @Component
-@ConfigurationProperties("myboot")
+@ConfigurationProperties("${tempMap.artifactId}")
 public class ApplicationConfig {
     public ApplicationConfig() {
     }

@@ -4,7 +4,7 @@
   <groupId>com.bookool</groupId>
   <artifactId>mybootcodegen</artifactId>
   <name>mybootcodegen</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>2.0</version>
   <url>http://www.example.com</url>
   <build>
     <finalName>mybootcodegen</finalName>
@@ -46,16 +46,16 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.2</version>
+      <version>1.18.8</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
   <properties>
-    <freemarker.version>2.3.28</freemarker.version>
+    <freemarker.version>2.3.29</freemarker.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <lombok.version>1.18.2</lombok.version>
-    <mysql-connector-java.version>8.0.12</mysql-connector-java.version>
+    <lombok.version>1.18.8</lombok.version>
+    <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>

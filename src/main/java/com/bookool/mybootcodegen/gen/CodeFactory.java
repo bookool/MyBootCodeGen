@@ -281,6 +281,17 @@ public class CodeFactory {
 //            }
 //        }
 
+        Map<String, String> map = new HashMap<>(5);
+        String packageName = prop.getProperty(PACKAGE_NAME);
+        int i = packageName.lastIndexOf('.');
+        String groupId = packageName.substring(0, i);
+        String artifactId = packageName.substring(i + 1);
+        map.put("groupId", groupId);
+        map.put("artifactId", artifactId);
+        map.put("dbUrl", prop.getProperty(DB_URL));
+        map.put("dbUserName", prop.getProperty(DB_USERNAME));
+        map.put("dbPassword", prop.getProperty(DB_PASSWORD));
+
         List<String> filesList = new ArrayList<>();
         try {
             String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -302,24 +313,12 @@ public class CodeFactory {
                 String javaPath = fileName.replaceFirst("^gen/commonjava/(.*\\.)ftl$", "$1java").replace('/', File.separatorChar);
                 String ftlPath = fileName.replaceFirst("^gen/", "");
                 Gener gener = new Gener(prop, javaPath, null);
+                gener.setTempMap(map);
                 genOne(gener, ftlPath);
             } catch (Exception e) {
                 //
             }
         }
-
-
-
-        Map<String, String> map = new HashMap<>();
-        String packageName = prop.getProperty(PACKAGE_NAME);
-        int i = packageName.lastIndexOf('.');
-        String groupId = packageName.substring(0, i);
-        String artifactId = packageName.substring(i + 1);
-        map.put("groupId", groupId);
-        map.put("artifactId", artifactId);
-        map.put("dbUrl", prop.getProperty(DB_URL));
-        map.put("dbUserName", prop.getProperty(DB_USERNAME));
-        map.put("dbPassword", prop.getProperty(DB_PASSWORD));
 
         String otherPath = "pomxml/pom.ftl";
         String pathHead = File.separatorChar + "pom.xml";
