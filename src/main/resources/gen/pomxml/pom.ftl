@@ -491,6 +491,7 @@
                     <include>application.yml</include>
                     <include>application-${r'${profileActive}'}.yml</include>
                     <include>com/**</include>
+                    <include>note/**</include>
                     <include>*.xml</include>
                     <include>*.json</include>
                     <!--<include>*.json</include>-->

@@ -100,8 +100,8 @@ public class HomeController extends BaseController {
 
     private String enumToString(Class<?> clazz, String name) throws Exception {
         Object[] objects = clazz.getEnumConstants();
-        Method getCode = clazz.getMethod("code");
-        Method getName = clazz.getMethod("message");
+        Method getCode = clazz.getMethod("getCode");
+        Method getName = clazz.getMethod("getMessage");
         StringBuilder stringBuilder = new StringBuilder("<h3 id=\"")
                 .append(name)
                 .append("\">")

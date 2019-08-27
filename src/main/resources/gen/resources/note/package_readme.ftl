@@ -10,7 +10,7 @@
     "token" : "xxxxx.xxxxx.xxxxx"
 }
 其中：
-success 表示业务请求是否成功，由 com.bookool.myboot.common.enums.response.base.BussinessEnum 表示。
+success 表示业务请求是否成功，由 ${packageName}.common.enums.response.base.BussinessEnum 表示。
 code 表示业务执行的结果代码，包括错误代码，正常的结果代码为正数，异常的结果代码为负数。
         code 可能为0，则表示一个临时的自定义信息。
 message 表示业务执行的结果的提示信息。
