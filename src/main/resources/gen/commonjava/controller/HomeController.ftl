@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -79,9 +77,7 @@ public class HomeController extends BaseController {
         StringBuilder bodyString = new StringBuilder();
         try {
             Set<Map.Entry<String, Class<?>>> set = linkedHashMap.entrySet();
-            Iterator<Map.Entry<String, Class<?>>> iterator = set.iterator();
-            while (iterator.hasNext()) {
-                Map.Entry entry = iterator.next();
+            for (Map.Entry entry : set) {
                 String key = (String) entry.getKey();
                 Class<?> value = (Class<?>) entry.getValue();
                 headString.append("<a href='#").append(key).append("'>").append(key).append("</a> &nbsp; ");
