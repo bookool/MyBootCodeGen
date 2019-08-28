@@ -49,6 +49,7 @@
         <cglib.version>3.3.0</cglib.version>
         <maven-model.version>3.6.1</maven-model.version>
         <annotations.version>RELEASE</annotations.version>
+        <kotlin-stdlib.version>1.3.50</kotlin-stdlib.version>
     </properties>
 
     <!--父项目的坐标。如果项目中没有规定某个元素的值，那么父项目中的对应值即为项目的默认值。
@@ -415,6 +416,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin-stdlib.version}</version>
+        </dependency>
+
 
     </dependencies>
 
@@ -509,6 +516,7 @@
 
         <!--使用的插件列表-->
         <plugins>
+
             <!--参见build/pluginManagement/plugins/plugin元素-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -528,6 +536,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <!-- 操作jar包 -->
@@ -551,6 +560,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <!-- maven编译 -->
@@ -560,6 +570,22 @@
                     <target>${r'${java.version}'}</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin-stdlib.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
